@@ -19,9 +19,15 @@ jobs:
         
       - name: Build the site in the jekyll/builder container
         run: |
-          docker run \
-          -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-          jekyll/builder:4.2.0 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
+          export JEKYLL_VERSION=3.8
+          docker run -- rm \
+            --volume="$PWD:/srv/jekyll:Z" \
+            -it jekyll/builder$JEKYLL_VERSION \
+            jekyll build
+            
+          # docker run \
+          # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+          # jekyll/builder:4.2.0 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
           
       - name: Test site      
         run: |
