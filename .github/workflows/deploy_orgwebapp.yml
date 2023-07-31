@@ -20,8 +20,8 @@ jobs:
       - name: Build the site in the jekyll/builder container
         run: |
           docker run --rm \
-            --volume="$PWD:/srv/jekyll:Z" \
-            jekyll/builder:3.8 /bin/bash -c "chown -R $USER /srv/jekyll && jekyll build"
+            --volume="$PWD:/srv/jekyll" \
+            jekyll/builder:3.8 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
             
           # docker run \
           # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
