@@ -21,7 +21,7 @@ jobs:
         run: |
           docker run --rm \
             --volume="$PWD:/srv/jekyll" \
-            jekyll/builder:3.8 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
+            jekyll/builder:4.2.0 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
             
           # docker run \
           # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
