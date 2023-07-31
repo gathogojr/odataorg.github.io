@@ -19,11 +19,9 @@ jobs:
         
       - name: Build the site in the jekyll/builder container
         run: |
-          JEKYLL_VERSION=3.8
           docker run --rm \
             --volume="$PWD:/srv/jekyll:Z" \
-            -it jekyll/builder:$JEKYLL_VERSION \
-            jekyll build
+            jekyll/builder:3.8 /bin/bash -c "chown -R $USER:$(id -gn $USER) /srv/jekyll && jekyll build"
             
           # docker run \
           # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
