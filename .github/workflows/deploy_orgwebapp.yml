@@ -25,7 +25,7 @@ jobs:
       - name: Test site
       
         run: |
-          /bin/bash file _site/assets/OASIS.png
+          file ${{ github.workspace }}/_site/assets/OASIS.png
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
