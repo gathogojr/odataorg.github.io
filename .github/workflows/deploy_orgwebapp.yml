@@ -16,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          lfs: true
         
       - name: Build the site in the jekyll/builder container
         run: |
