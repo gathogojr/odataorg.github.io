@@ -21,15 +21,19 @@ jobs:
         run: |
           docker run --rm \
             --volume="$PWD:/srv/jekyll" \
-            jekyll/builder:4.2.0 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
+            jekyll/builder:stable /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
             
           # docker run \
           # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-          # jekyll/builder:4.2.2 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
+          # jekyll/builder:stable /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build"
           
       - name: Test site      
         run: |
           file ${{ github.workspace }}/_site/assets/OASIS.png
+          
+      - name: Another test site      
+        run: |
+          file ${{ github.workspace }}/assets/OASIS.png
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
