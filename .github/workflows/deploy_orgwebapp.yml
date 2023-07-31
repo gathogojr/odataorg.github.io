@@ -21,7 +21,11 @@ jobs:
         run: |
           docker run \
           -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
-          jekyll/builder:3.4.4 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --config _config.yml --future && file _site/assets/OASIS.png"
+          jekyll/builder:3.4.4 /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --config _config.yml --future"
+      - name: Test site
+      
+        run: |
+          /bin/bash file _site/assets/OASIS.png
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
