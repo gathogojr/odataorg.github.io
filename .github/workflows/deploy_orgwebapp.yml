@@ -21,7 +21,7 @@ jobs:
         run: |
           docker run --rm \
             --volume="$PWD:/srv/jekyll:Z" \
-            jekyll/builder:3.8 /bin/bash -c "chown -R $USER:$(id -gn $USER) /srv/jekyll && jekyll build"
+            jekyll/builder:3.8 /bin/bash -c "chown -R $USER /srv/jekyll && jekyll build"
             
           # docker run \
           # -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
