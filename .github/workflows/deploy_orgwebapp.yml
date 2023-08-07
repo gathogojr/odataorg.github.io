@@ -42,5 +42,5 @@ jobs:
         with:
           app-name: 'OrgWebApp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBB617F291B34A16B028193C68B9CBBA }}
+          creds: ${{ secrets.ORGWEBAPP_PUBLISH_CREDENTIALS }}
           package: ${{ github.workspace }}/_site
