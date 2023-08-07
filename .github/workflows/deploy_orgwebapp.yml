@@ -37,10 +37,14 @@ jobs:
         run: |
           file ${{ github.workspace }}/assets/OASIS.png
 
+      - name: Log in with Azure
+        uses: azure/login@v1
+        with:
+          creds: '${{ secrets.ORGWEBAPP_PUBLISH_CREDENTIALS }}'
+          
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'OrgWebApp'
           slot-name: 'Production'
-          creds: ${{ secrets.ORGWEBAPP_PUBLISH_CREDENTIALS }}
           package: ${{ github.workspace }}/_site
