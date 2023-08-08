@@ -1,45 +1,39 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+# More on GitHub Actions for Azure: https://github.com/Azure/actions
+# More on GitHub Action for Azure Login: https://github.com/azure/login#github-action-for-azure-login
 
-name: Build and deploy org website to Azure Web App - OrgWebApp
+name: Publish org website
 
 on:
   push:
     branches:
       - deploy
-  workflow_dispatch:
+  workflow_dispatch: # Makes it possible to trigger workflow manually
 
 jobs:
-  build_and_deploy_job:
-    permissions:
-      id-token: write
-      contents: read
-    
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  publish:
+    if: github.repository_owner == 'OData' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed') || github.event_name == 'workflow_dispatch')
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
-          lfs: true
-          submodules: 'recursive'
+          lfs: true # Forces LFS files (images in our case) to be checked out
+          submodules: 'recursive' # Check out submodules if applicable
         
-      - name: Build the site in the jekyll/builder container
-        run: |            
+      - name: Build the site in a jekyll/builder container
+        run: |
           docker run \
             -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
             jekyll/builder:stable /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
-          
-      - name: Log in with Azure
+
+      - name: Log in with Azure # Using Azure Service Principal
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
           
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'OrgWebApp'
-          slot-name: 'Production'
           package: ${{ github.workspace }}/_site
